@@ -1,0 +1,113 @@
+========================================================================
+             ATOMBERG GOALSYNC PRO - SUBMISSION DEPLOYMENT MANUAL
+========================================================================
+
+This guide provides step-by-step instructions to host and deploy the 
+Goal Setting & Tracking Portal live on free-tier cloud platforms. By 
+following these instructions, you will get a live/hosted demo URL for 
+your hackathon submission deliverables.
+
+We recommend deploying:
+1. The MongoDB database on "MongoDB Atlas" (Free Shared Cloud DB).
+2. The Backend Node.js Server on "Render" (Free Web Service).
+3. The Frontend React App on "Vercel" (Free Static App Hosting).
+
+------------------------------------------------------------------------
+STEP 1: SET UP A FREE MONGODB ATLAS CLUSTER (DATABASE)
+------------------------------------------------------------------------
+1. Go to https://www.mongodb.com/cloud/atlas and create a free account.
+2. Click "Build a Database" and select the M0 Free Shared Cluster.
+3. Choose your preferred cloud provider (e.g., AWS) and region, then 
+   click "Create Cluster".
+4. Set up Database Security:
+   - Create a database user (e.g., Username: "dbuser", Password: "dbpassword").
+     Make sure to save these credentials securely.
+   - For network access, select "Allow Access from Anywhere" (0.0.0.0/0). 
+     This is required since hosting servers like Render use dynamic IPs.
+5. Get your Connection String:
+   - Click "Database" in the left menu, then click "Connect" -> "Drivers".
+   - Copy the Connection String. It looks like:
+     mongodb+srv://dbuser:<db_password>@cluster0.abcde.mongodb.net/?retryWrites=true&w=majority
+   - Replace "<db_password>" with the password you created in step 4.
+
+------------------------------------------------------------------------
+STEP 2: PREPARE AND PUSH YOUR WORKSPACE TO GITHUB
+------------------------------------------------------------------------
+1. Create a new repository on your GitHub account named "atomberg-goalsync".
+2. In your local terminal, initialize git in the root folder (atomquest):
+   git init
+   git add .
+   git commit -m "feat: complete goal tracking portal with automated notifications and shared KPIs"
+3. Link and push the repository to GitHub:
+   git remote add origin https://github.com/YOUR_USERNAME/atomberg-goalsync.git
+   git branch -M main
+   git push -u origin main
+
+------------------------------------------------------------------------
+STEP 3: DEPLOY THE NODE.JS BACKEND TO RENDER
+------------------------------------------------------------------------
+1. Sign up/Log in to https://render.com/ using your GitHub account.
+2. Click "New +" and select "Web Service".
+3. Connect your "atomberg-goalsync" repository.
+4. Configure the service with the following settings:
+   - Name: "goalsync-api"
+   - Runtime: Node
+   - Build Command: npm install
+   - Start Command: node index.js
+     *(Note: If Render prompts you for a subdirectory, set it to "server" or keep it in the root depending on your project directory structure. Since the server is a sub-folder, configure the root directory or base directory to "server")*
+5. Add Environment Variables:
+   - Scroll down to "Advanced" and click "Add Environment Variable".
+   - Set the following variables:
+     * NODE_ENV = production
+     * PORT = 10000
+     * MONGO_URI = <YOUR_MONGODB_ATLAS_CONNECTION_STRING>
+     * JWT_SECRET = <ANY_RANDOM_LONG_SECRET_KEY>
+6. Click "Deploy Web Service".
+7. Once deployed, Render will provide your Backend URL. It will look like:
+   https://goalsync-api.onrender.com
+
+------------------------------------------------------------------------
+STEP 4: DEPLOY THE FRONTEND REACT APP TO VERCEL
+------------------------------------------------------------------------
+1. Sign up/Log in to https://vercel.com/ using your GitHub account.
+2. Click "Add New" and select "Project".
+3. Import your "atomberg-goalsync" repository.
+4. Configure the project settings:
+   - Framework Preset: Vite
+   - Root Directory: client (Important! Set this to the "client" folder)
+5. Add Environment Variables:
+   - Under the Environment Variables section, add:
+     * VITE_API_URL = <YOUR_RENDER_BACKEND_URL>
+       (Example: https://goalsync-api.onrender.com)
+6. Click "Deploy".
+7. Within 1 minute, Vercel will build and host your app, providing your 
+   official live demo URL. It will look like:
+   https://atomberg-goalsync.vercel.app
+
+------------------------------------------------------------------------
+STEP 5: SEED YOUR PRODUCTION DATABASE WITH MOCK ACCOUNTS
+------------------------------------------------------------------------
+To let the hackathon judges test all roles instantly (Admin, L1 Manager, 
+Employee), you can seed your live database:
+1. In your local backend project directory (server), open ".env" and set 
+   your MONGO_URI to the live MongoDB Atlas connection string.
+2. Run the seed script:
+   node seed.js
+3. This will immediately populate your live database with the following demo credentials:
+   - HR Admin: admin@atomberg.com / admin123
+   - L1 Manager: manager@atomberg.com / manager123
+   - Employee 1: employee1@atomberg.com / employee123
+   - Employee 2: employee2@atomberg.com / employee123
+
+------------------------------------------------------------------------
+STEP 6: SUBMIT YOUR HACKATHON DELIVERABLES
+========================================================================
+Compile the following details for your submission form:
+
+1. Live Demo URL: https://atomberg-goalsync.vercel.app
+2. GitHub Repository Link: https://github.com/YOUR_USERNAME/atomberg-goalsync
+3. Seeded Test Credentials (include in README or description):
+   - HR Admin Portal: admin@atomberg.com / admin123
+   - L1 Management Portal: manager@atomberg.com / manager123
+   - Employee Goal sheet: employee1@atomberg.com / employee123
+========================================================================
