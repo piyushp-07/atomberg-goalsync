@@ -30,15 +30,14 @@ const goalSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Pre-save schema validation
-goalSchema.pre('save', async function(next) {
+goalSchema.pre('save', async function () {
   if (this.isNew) {
     const Goal = mongoose.model('Goal');
     const count = await Goal.countDocuments({ ownerId: this.ownerId });
     if (count >= 8) {
-      return next(new Error('Maximum number of goals per employee is 8.'));
+      throw new Error('Maximum number of goals per employee is 8.');
     }
   }
-  next();
 });
 
 module.exports = mongoose.model('Goal', goalSchema);
