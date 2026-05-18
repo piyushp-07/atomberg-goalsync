@@ -19,20 +19,20 @@ The production database is fully seeded. For the ultimate ease of evaluation, th
 
 | User Role | Username / Email | Password | Allowed Dashboards & Features |
 | :--- | :--- | :--- | :--- |
-| **HR Admin** | `admin@atomberg.com` | `admin123` | Cycle shifts, audit logs, locked sheet overrides, propagate shared KPIs, System Notification console. |
-| **L1 Manager** | `manager@atomberg.com` | `manager123` | Direct reports review, inline target edits, check-in reviews & feedback, department analytics. |
-| **Employee 1** | `employee1@atomberg.com` | `employee123` | Goal formulations draft sheet, weightage balancing (100%), Q1-Q4 check-in logging. |
-| **Employee 2** | `employee2@atomberg.com` | `employee123` | Receive propagated read-only shared goals, adjust weightage, log check-ins. |
+| **HR Admin** | `hr1@goalsync.com` | `hr1` | Cycle shifts, audit logs, locked sheet overrides, propagate shared KPIs, System Notification console. |
+| **L1 Manager** | `m1@goalsync.com` | `m1` | Direct reports review, inline target edits, check-in reviews & feedback, department analytics. |
+| **Employee 1** | `e1@goalsync.com` | `e1` | Goal formulations draft sheet, weightage balancing (100%), Q1-Q4 check-in logging. |
+| **Employee 2** | `e2@goalsync.com` | `e2` | Receive propagated read-only shared goals, adjust weightage, log check-ins. |
 
 ---
 
 ## 📐 3. System Architecture Diagram
 The system follows a decoupling-first MERN stack blueprint, incorporating a real-time event dispatcher for outbound automated communications:
 
-![System Architecture Diagram](architecture_diagram.png)
+![System Architecture Diagram](system_architecture_diagram.png)
 
 ### Architecture Stack Layers
-1.  **Presentation Tier (Client)**: React.js (Vite), Tailwind CSS (v4), Axios Client, Recharts Engine.
+1.  **Presentation Tier (Client)**: React.js (Vite), Vanilla CSS, Axios Client, Recharts Engine.
 2.  **API Gateway & Controller Tier**: Node.js & Express.js server, custom RBAC authorization middleware.
 3.  **Database & Audit Tier**: MongoDB Atlas (Cloud Shared Cluster), Mongoose Object Modeler.
 4.  **Integration Tier**: Simulated Notification Dispatcher (Console trace and persistent system logs).
